@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_ifrs18_report_wizard_form" model="ir.ui.view">
+        <field name="name">ifrs18.report.wizard.form</field>
+        <field name="model">ifrs18.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="IFRS 18 Financial Report">
+                <group>
+                    <group string="Report Parameters">
+                        <field name="report_type" widget="radio"/>
+                        <field name="target_move" widget="radio"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>
+                    <group string="Date Range">
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                </group>
+                <group string="Comparison Period (optional)">
+                    <group>
+                        <field name="comparison_date_from"/>
+                        <field name="comparison_date_to"/>
+                    </group>
+                </group>
+                <group invisible="report_type != 'cf'">
+                    <field name="cash_flow_method" widget="radio"/>
+                </group>
+                <group invisible="report_type != 'partner'">
+                    <field name="partner_id"/>
+                </group>
+                <group string="Export">
+                    <field name="export_format" widget="radio"/>
+                    <field name="email_to" invisible="export_format != 'email'"
+                           placeholder="recipient@example.com"/>
+                </group>
+                <footer>
+                    <button name="action_generate_report" type="object"
+                            string="Generate Report" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ifrs18_report_wizard" model="ir.actions.act_window">
+        <field name="name">IFRS 18 Financial Reports</field>
+        <field name="res_model">ifrs18.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

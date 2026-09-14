@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_ifrs18_category_tree" model="ir.ui.view">
+        <field name="name">ifrs18.category.tree</field>
+        <field name="model">ifrs18.category</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="report_type"/>
+                <field name="section"/>
+                <field name="sign"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ifrs18_category_form" model="ir.ui.view">
+        <field name="name">ifrs18.category.form</field>
+        <field name="model">ifrs18.category</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="report_type"/>
+                            <field name="section"/>
+                        </group>
+                        <group>
+                            <field name="sequence"/>
+                            <field name="sign"/>
+                            <field name="parent_id"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Mapped Accounts">
+                            <field name="account_ids" readonly="1">
+                                <list>
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                    <field name="account_type"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes">
+                            <field name="note"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ifrs18_category" model="ir.actions.act_window">
+        <field name="name">IFRS 18 Categories</field>
+        <field name="res_model">ifrs18.category</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

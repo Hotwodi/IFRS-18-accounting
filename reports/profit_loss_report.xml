@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="ifrs18_profit_loss_report">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h2 class="text-center">Profit & Loss Statement</h2>
+                    <p class="text-center text-muted">
+                        <span t-esc="docs.company_id.name"/> —
+                        Period: <span t-esc="docs.date_from"/> to <span t-esc="docs.date_to"/>
+                    </p>
+                    <table class="table table-sm table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th class="text-end">Amount</th>
+                                <th t-if="docs.comparison_date_from" class="text-end">Comparison</th>
+                                <th t-if="docs.comparison_date_from" class="text-end">Variance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="data.get('sections', {}).items()" t-as="section">
+                                <tr class="table-active">
+                                    <th colspan="4"><span t-esc="section[1]['label']"/></th>
+                                </tr>
+                                <t t-foreach="section[1]['lines']" t-as="line">
+                                    <tr>
+                                        <td style="padding-left: 20px;">
+                                            <span t-esc="line['name']"/>
+                                            <small class="text-muted" t-if="line.get('code')"> (<span t-esc="line['code']"/>)</small>
+                                        </td>
+                                        <td class="text-end"><span t-esc="line['amount']" t-options="{'widget': 'monetary', 'display_currency': docs.company_id.currency_id}"/></td>
+                                        <td t-if="docs.comparison_date_from" class="text-end"><span t-esc="line['comparison_amount']" t-options="{'widget': 'monetary', 'display_currency': docs.company_id.currency_id}"/></td>
+                                        <td t-if="docs.comparison_date_from" class="text-end"><span t-esc="line['amount'] - line['comparison_amount']" t-options="{'widget': 'monetary', 'display_currency': docs.company_id.currency_id}"/></td>
+                                    </tr>
+                                </t>
+                                <tr class="table-light">
+                                    <th style="padding-left: 10px;">Subtotal — <span t-esc="section[1]['label']"/></th>
+                                    <th class="text-end"><span t-esc="section[1]['subtotal']" t-options="{'widget': 'monetary', 'display_currency': docs.company_id.currency_id}"/></th>
+                                    <th t-if="docs.comparison_date_from" class="text-end"><span t-esc="section[1]['comparison_subtotal']" t-options="{'widget': 'monetary', 'display_currency': docs.company_id.currency_id}"/></th>
+                                    <th t-if="docs.comparison_date_from" class="text-end"><span t-esc="section[1]['variance']" t-options="{'widget': 'monetary', 'display_currency': docs.company_id.currency_id}"/></th>
+                                </tr>
+                            </t>
+                        </tbody>
+                        <tfoot>
+                            <tr class="table-dark">
+                                <th>Net Profit / (Loss)</th>
+                                <th class="text-end"><span t-esc="data['net_profit']" t-options="{'widget': 'monetary', 'display_currency': docs.company_id.currency_id}"/></th>
+                                <th t-if="docs.comparison_date_from" class="text-end"><span t-esc="data['comparison_net_profit']" t-options="{'widget': 'monetary', 'display_currency': docs.company_id.currency_id}"/></th>
+                                <th t-if="docs.comparison_date_from" class="text-end"><span t-esc="data['net_variance']" t-options="{'widget': 'monetary', 'display_currency': docs.company_id.currency_id}"/></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <p class="text-muted small">Prepared in accordance with IFRS 18 presentation requirements.</p>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <record id="action_report_ifrs18_profit_loss" model="ir.actions.report">
+        <field name="name">IFRS 18 Profit & Loss</field>
+        <field name="model">ifrs18.report.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ifrs18_financial_reports.ifrs18_profit_loss_report</field>
+        <field name="report_file">ifrs18_financial_reports.ifrs18_profit_loss_report</field>
+        <field name="paperformat_id" ref="ifrs18_financial_reports.paperformat_ifrs18"/>
+    </record>
+</odoo>

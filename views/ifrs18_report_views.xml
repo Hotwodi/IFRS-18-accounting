@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Paper format for IFRS 18 reports -->
+    <record id="paperformat_ifrs18" model="report.paperformat">
+        <field name="name">IFRS 18 Financial Reports</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">25</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">15</field>
+        <field name="margin_right">15</field>
+        <field name="header_spacing">15</field>
+        <field name="dpi">110</field>
+    </record>
+
+    <!-- Email template for report delivery -->
+    <record id="email_template_ifrs18_report" model="mail.template">
+        <field name="name">IFRS 18 Financial Report</field>
+        <field name="model_id" ref="model_ifrs18_report_wizard"/>
+        <field name="subject">${object.company_id.name} — IFRS 18 Financial Report</field>
+        <field name="email_to">${object.email_to}</field>
+        <field name="body_html" type="html">
+            <div>
+                <p>Dear recipient,</p>
+                <p>Please find attached the IFRS 18 Financial Report for
+                   <strong t-esc="object.company_id.name"/>
+                   for the period <span t-esc="object.date_from"/> to <span t-esc="object.date_to"/>.</p>
+                <p>Best regards,<br/>SoftaiDev</p>
+            </div>
+        </field>
+    </record>
+
+    <!-- Extend account form to add IFRS 18 category mapping -->
+    <record id="view_account_form_ifrs18" model="ir.ui.view">
+        <field name="name">account.account.form.ifrs18</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="IFRS 18 Mapping">
+                    <field name="ifrs18_category_id"
+                           domain="[('report_type', '=', 'pl')]"
+                           string="P&L Category"/>
+                    <field name="ifrs18_bs_category_id"
+                           domain="[('report_type', '=', 'bs')]"
+                           string="Balance Sheet Category"/>
+                    <field name="ifrs18_cf_category_id"
+                           domain="[('report_type', '=', 'cf')]"
+                           string="Cash Flow Category"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Drill-down view: Journal Items filtered by account (for P&L / BS / TB drill-down) -->
+    <record id="view_ifrs18_journal_items_drilldown" model="ir.ui.view">
+        <field name="name">account.move.line.ifrs18.drilldown</field>
+        <field name="model">account.move.line</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="date"/>
+                <field name="move_id"/>
+                <field name="account_id"/>
+                <field name="partner_id"/>
+                <field name="ref"/>
+                <field name="debit" sum="Total Debit"/>
+                <field name="credit" sum="Total Credit"/>
+                <field name="balance" sum="Total Balance"/>
+            </list>
+        </field>
+    </record>
+</odoo>

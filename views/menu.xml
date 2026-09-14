@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Root menu -->
+    <menuitem id="menu_ifrs18_root"
+              name="IFRS 18 Financial Reports"
+              sequence="15"
+              web_icon="ifrs18_financial_reports,static/description/icon.png"/>
+
+    <!-- Reports submenu -->
+    <menuitem id="menu_ifrs18_reports"
+              name="Financial Statements"
+              parent="menu_ifrs18_root"
+              sequence="10"/>
+
+    <menuitem id="menu_ifrs18_report_wizard"
+              name="Generate Report"
+              parent="menu_ifrs18_reports"
+              action="action_ifrs18_report_wizard"
+              sequence="10"/>
+
+    <!-- Configuration submenu -->
+    <menuitem id="menu_ifrs18_config"
+              name="Configuration"
+              parent="menu_ifrs18_root"
+              sequence="90"/>
+
+    <menuitem id="menu_ifrs18_categories"
+              name="IFRS 18 Categories"
+              parent="menu_ifrs18_config"
+              action="action_ifrs18_category"
+              sequence="10"/>
+
+    <!-- Account mapping via account view extension -->
+    <menuitem id="menu_ifrs18_account_mapping"
+              name="Account Mapping"
+              parent="menu_ifrs18_config"
+              action="account.action_account_form"
+              sequence="20"/>
+</odoo>

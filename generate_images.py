@@ -4,7 +4,8 @@ import os
 import sys
 import time
 
-os.environ["FAL_KEY"] = "***REDACTED-FAL-KEY***"
+if not os.environ.get("FAL_KEY"):
+    raise RuntimeError("Set FAL_KEY in the environment before running this script.")
 
 STATIC_DIR = os.path.join(os.path.dirname(__file__), "ai_ifrs18_financial_reports", "static", "description")
 

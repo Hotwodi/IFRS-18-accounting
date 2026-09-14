@@ -2,6 +2,7 @@
     'name': 'IFRS 18 Financial Reports Suite',
     'version': '18.0.1.0.0',
     'category': 'Accounting/Financial Reports',
+    'images': ['static/description/cover.png'],
     'summary': 'Dynamic IFRS 18 financial statements for Odoo Community: P&L, Balance Sheet, Cash Flow, Changes in Equity, Trial Balance, Partner Ledgers.',
     'description': """
 IFRS 18 Financial Reports Suite
